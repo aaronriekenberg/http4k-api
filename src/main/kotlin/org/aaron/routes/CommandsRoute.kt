@@ -76,113 +76,6 @@ object CommandsRoute {
             )
 }
 
-val commandsMap = mapOf(
-    "chronyc_sources" to CommandInfoDTO(
-        id = "chronyc_sources",
-        description = "chronyc sources",
-        command = "/usr/bin/chronyc",
-        args = listOf(
-            "-n",
-            "sources",
-            "-v",
-        ),
-    ),
-    "chronyc_sourcestats" to CommandInfoDTO(
-        id = "chronyc_sourcestats",
-        description = "chronyc sourcestats",
-        command = "/usr/bin/chronyc",
-        args = listOf(
-            "-n",
-            "sourcestats",
-            "-v",
-        ),
-    ),
-    "df" to CommandInfoDTO(
-        id = "df",
-        description = "df",
-        command = "/usr/bin/df",
-        args = listOf("-h"),
-    ),
-    "git_log" to CommandInfoDTO(
-        id = "git_log",
-        description = "git log",
-        command = "/usr/bin/git",
-        args = listOf(
-            "log",
-            "-1",
-        ),
-    ),
-    "ip_addr" to CommandInfoDTO(
-        id = "ip_addr",
-        description = "ip addr",
-        command = "/usr/sbin/ip",
-        args = listOf(
-            "addr",
-        ),
-    ),
-    "lscpu" to CommandInfoDTO(
-        id = "lscpu",
-        description = "lscpu",
-        command = "/usr/bin/lscpu",
-    ),
-    "lscpu_e" to CommandInfoDTO(
-        id = "lscpu_e",
-        description = "lscpu -e",
-        command = "/usr/bin/lscpu",
-        args = listOf(
-            "-e",
-        ),
-    ),
-    "netstat_an" to CommandInfoDTO(
-        id = "netstat_an",
-        description = "netstat -an",
-        command = "/usr/bin/netstat",
-        args = listOf(
-            "-an",
-        ),
-    ),
-    "sensors" to CommandInfoDTO(
-        id = "sensors",
-        description = "sensors",
-        command = "/usr/bin/sensors",
-    ),
-    "top" to CommandInfoDTO(
-        id = "top",
-        description = "top",
-        command = "/usr/bin/top",
-        args = listOf(
-            "-b",
-            "-n1",
-        ),
-    ),
-    "top_ores" to CommandInfoDTO(
-        id = "top_ores",
-        description = "top -o RES",
-        command = "/usr/bin/top",
-        args = listOf(
-            "-b",
-            "-n1",
-            "-o",
-            "RES",
-        ),
-    ),
-    "uptime" to CommandInfoDTO(
-        id = "uptime",
-        description = "uptime",
-        command = "/usr/bin/uptime",
-    ),
-    "vmstat" to CommandInfoDTO(
-        id = "vmstat",
-        description = "vmstat",
-        command = "/usr/bin/vmstat",
-    ),
-    "w" to CommandInfoDTO(
-        id = "w",
-        description = "w",
-        command = "/usr/bin/w",
-    ),
-)
-
 enum class RunCommandResultType {
     COMMAND_NOT_FOUND,
     TOO_MANY_COMMANDS_RUNNING,
@@ -251,3 +144,110 @@ object CommandService {
     }
 
 }
+
+private val commandsMap = listOf(
+    CommandInfoDTO(
+        id = "chronyc_sources",
+        description = "chronyc sources",
+        command = "/usr/bin/chronyc",
+        args = listOf(
+            "-n",
+            "sources",
+            "-v",
+        ),
+    ),
+    CommandInfoDTO(
+        id = "chronyc_sourcestats",
+        description = "chronyc sourcestats",
+        command = "/usr/bin/chronyc",
+        args = listOf(
+            "-n",
+            "sourcestats",
+            "-v",
+        ),
+    ),
+    CommandInfoDTO(
+        id = "df",
+        description = "df",
+        command = "/usr/bin/df",
+        args = listOf("-h"),
+    ),
+    CommandInfoDTO(
+        id = "git_log",
+        description = "git log",
+        command = "/usr/bin/git",
+        args = listOf(
+            "log",
+            "-1",
+        ),
+    ),
+    CommandInfoDTO(
+        id = "ip_addr",
+        description = "ip addr",
+        command = "/usr/sbin/ip",
+        args = listOf(
+            "addr",
+        ),
+    ),
+    CommandInfoDTO(
+        id = "lscpu",
+        description = "lscpu",
+        command = "/usr/bin/lscpu",
+    ),
+    CommandInfoDTO(
+        id = "lscpu_e",
+        description = "lscpu -e",
+        command = "/usr/bin/lscpu",
+        args = listOf(
+            "-e",
+        ),
+    ),
+    CommandInfoDTO(
+        id = "netstat_an",
+        description = "netstat -an",
+        command = "/usr/bin/netstat",
+        args = listOf(
+            "-an",
+        ),
+    ),
+    CommandInfoDTO(
+        id = "sensors",
+        description = "sensors",
+        command = "/usr/bin/sensors",
+    ),
+    CommandInfoDTO(
+        id = "top",
+        description = "top",
+        command = "/usr/bin/top",
+        args = listOf(
+            "-b",
+            "-n1",
+        ),
+    ),
+    CommandInfoDTO(
+        id = "top_ores",
+        description = "top -o RES",
+        command = "/usr/bin/top",
+        args = listOf(
+            "-b",
+            "-n1",
+            "-o",
+            "RES",
+        ),
+    ),
+    CommandInfoDTO(
+        id = "uptime",
+        description = "uptime",
+        command = "/usr/bin/uptime",
+    ),
+    CommandInfoDTO(
+        id = "vmstat",
+        description = "vmstat",
+        command = "/usr/bin/vmstat",
+    ),
+    CommandInfoDTO(
+        id = "w",
+        description = "w",
+        command = "/usr/bin/w",
+    ),
+).associateBy { it.id }

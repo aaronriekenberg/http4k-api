@@ -1,6 +1,7 @@
 package org.aaron.routes
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.aaron.context.requestSharedStateKey
 import org.http4k.core.Body
 import org.http4k.core.Method
 import org.http4k.core.Method.GET
@@ -11,6 +12,9 @@ import org.http4k.format.Jackson.auto
 import org.http4k.routing.bind
 
 data class RequestFieldsDTO(
+    @JsonProperty("request_id")
+    val requestID: Long,
+
     @JsonProperty("method")
     val method: Method,
 
@@ -36,6 +40,7 @@ object RequestInfoRoute {
 
         val requestInfoDTO = RequestInfoDTO(
             requestFields = RequestFieldsDTO(
+                requestID = requestSharedStateKey(request).requestID,
                 method = request.method,
                 version = request.version,
                 uri = request.uri.toString(),

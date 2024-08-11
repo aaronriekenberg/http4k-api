@@ -6,6 +6,7 @@ import org.http4k.core.Method.GET
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.NOT_FOUND
 import org.http4k.core.Status.Companion.OK
+import org.http4k.core.Status.Companion.TOO_MANY_REQUESTS
 import org.http4k.core.with
 import org.http4k.format.Jackson.auto
 import org.http4k.routing.bind
@@ -17,6 +18,7 @@ import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.Semaphore
+import java.util.concurrent.TimeUnit
 
 data class CommandInfoDTO(
     @JsonProperty("id")
@@ -32,7 +34,7 @@ data class CommandInfoDTO(
     val args: List<String> = listOf(),
 )
 
-data class RunCommandResult(
+data class RunCommandResultDTO(
     @JsonProperty("command_info")
     val commandInfo: CommandInfoDTO,
 
@@ -48,7 +50,7 @@ data class RunCommandResult(
 
 val allCommandsListResultLens = Body.auto<List<CommandInfoDTO>>().toLens()
 
-val runCommandResultLens = Body.auto<RunCommandResult>().toLens()
+val runCommandResultLens = Body.auto<RunCommandResultDTO>().toLens()
 
 object CommandsRoute {
     operator fun invoke() = "/api/v1/commands" bind GET to
@@ -60,18 +62,16 @@ object CommandsRoute {
                 },
                 "/{id}" bind { request ->
                     val id = request.path("id")
-                    println("got command id $id")
 
                     val result = CommandService.runCommand(id = id)
 
-                    if (result == null) {
-                        Response(NOT_FOUND)
-                    } else {
-                        Response(OK).with(
-                            runCommandResultLens of result
+                    when (result.type) {
+                        RunCommandResultType.COMMAND_NOT_FOUND -> Response(NOT_FOUND)
+                        RunCommandResultType.TOO_MANY_COMMANDS_RUNNING -> Response(TOO_MANY_REQUESTS)
+                        RunCommandResultType.OK -> Response(OK).with(
+                            runCommandResultLens of result.runCommandResultDTO!!,
                         )
                     }
-
                 },
             )
 }
@@ -92,20 +92,38 @@ val commandsMap = mapOf(
     ),
 )
 
+enum class RunCommandResultType {
+    COMMAND_NOT_FOUND,
+    TOO_MANY_COMMANDS_RUNNING,
+    OK,
+}
+
+data class RunCommandResult(
+    val type: RunCommandResultType,
+    val runCommandResultDTO: RunCommandResultDTO? = null,
+)
+
 object CommandService {
 
     private val semaphore = Semaphore(10)
 
     fun allCommands(): List<CommandInfoDTO> = commandsMap.values.toList()
 
-    fun runCommand(id: String?): RunCommandResult? {
+    fun runCommand(id: String?): RunCommandResult {
         if (id == null) {
-            return null
+            return RunCommandResult(
+                type = RunCommandResultType.COMMAND_NOT_FOUND,
+            )
         }
 
-        val commandInfo = commandsMap[id] ?: return null
+        val commandInfo = commandsMap[id] ?: return RunCommandResult(
+            type = RunCommandResultType.COMMAND_NOT_FOUND,
+        )
 
-        semaphore.acquireUninterruptibly()
+        if (!semaphore.tryAcquire(200, TimeUnit.MILLISECONDS)) {
+            return RunCommandResult(type = RunCommandResultType.TOO_MANY_COMMANDS_RUNNING)
+        }
+
         try {
             val commandAndArgs = listOf(commandInfo.command) + commandInfo.args
 
@@ -125,11 +143,16 @@ object CommandService {
                 .readLines()
                 .joinToString(separator = "\n")
 
-            return RunCommandResult(
+            val runCommandResultDTO = RunCommandResultDTO(
                 commandInfo = commandInfo,
                 now = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT),
                 commandOutput = outputString,
                 commandDurationMilliseconds = commandDurationMilliseconds,
+            )
+
+            return RunCommandResult(
+                type = RunCommandResultType.OK,
+                runCommandResultDTO = runCommandResultDTO,
             )
         } finally {
             semaphore.release()

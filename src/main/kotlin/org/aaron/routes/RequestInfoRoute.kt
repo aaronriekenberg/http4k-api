@@ -45,8 +45,6 @@ object RequestInfoRoute {
             requestHeaders = request.headers.associate { it.first to it.second },
         )
 
-        request.headers
-
         Response(OK).with(
             requestInfoDTOLens of requestInfoDTO
         )

@@ -1,4 +1,6 @@
 .gradle/
 .idea/
 build/
-gc.log
+gc.log*
+logs/output*
+logs/lock*

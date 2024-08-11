@@ -10,7 +10,6 @@ import org.http4k.core.with
 import org.http4k.format.Jackson.auto
 import org.http4k.routing.bind
 
-
 data class RequestFieldsDTO(
     @JsonProperty("method")
     val method: Method,
@@ -31,7 +30,6 @@ data class RequestInfoDTO(
 )
 
 val requestInfoDTOLens = Body.auto<RequestInfoDTO>().toLens()
-
 
 object RequestInfoRoute {
     operator fun invoke() = "/api/v1/request_info" bind GET to { request ->

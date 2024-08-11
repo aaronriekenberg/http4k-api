@@ -19,7 +19,6 @@ data class IncomingHttpRequest(val uri: Uri, val status: Int, val duration: Long
 
 data class ServerStartedEvent(val port: Int) : Event
 
-
 fun main() {
     // Stack filters for Events in the same way as HttpHandlers to
     // transform or add metadata to the Events.

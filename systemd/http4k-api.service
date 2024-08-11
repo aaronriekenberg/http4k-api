@@ -1,0 +1,12 @@
+# ~/.config/systemd/user/http4k.service
+
+[Unit]
+AssertPathExists=%h/http4k-api
+
+[Service]
+WorkingDirectory=%h/http4k-api
+ExecStart=%h/http4k-api/run.sh
+Restart=always
+
+[Install]
+WantedBy=default.target

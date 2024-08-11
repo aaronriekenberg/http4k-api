@@ -127,7 +127,7 @@ val commandsMap = mapOf(
     ),
     "lscpu_e" to CommandInfoDTO(
         id = "lscpu_e",
-        description = "lscpu_e",
+        description = "lscpu -e",
         command = "/usr/bin/lscpu",
         args = listOf(
             "-e",

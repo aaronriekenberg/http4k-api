@@ -19,7 +19,7 @@ buildscript {
 }
 
 val http4kVersion: String by project
-val http4kConnectVersion: String by project
+//val http4kConnectVersion: String by project
 val junitVersion: String by project
 val kotlinVersion: String by project
 

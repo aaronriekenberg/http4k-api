@@ -53,7 +53,7 @@ val allCommandsListResultLens = Body.auto<List<CommandInfoDTO>>().toLens()
 val runCommandResultLens = Body.auto<RunCommandResultDTO>().toLens()
 
 object CommandsRoute {
-    operator fun invoke() = "/api/v1/commands" bind GET to
+    operator fun invoke() = "/commands" bind GET to
             routes(
                 "/" bind {
                     Response(OK).with(

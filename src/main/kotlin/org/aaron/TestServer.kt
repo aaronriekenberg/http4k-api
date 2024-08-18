@@ -1,7 +1,11 @@
 package org.aaron
 
+import org.aaron.config.port
 import org.aaron.context.requestContextFilter
-import org.aaron.event.*
+import org.aaron.event.ServerStartedEvent
+import org.aaron.event.catchAllFilter
+import org.aaron.event.events
+import org.aaron.event.recordHttpTransactionFilter
 import org.aaron.routes.CommandsRoute
 import org.aaron.routes.HealthRoute
 import org.aaron.routes.RequestInfoRoute
@@ -31,7 +35,7 @@ fun main() {
             .then(catchAllFilter)
             .then(appRoutes)
 
-    val server = appWithFilters.asServer(Undertow(port = 8080)).start()
+    val server = appWithFilters.asServer(Undertow(port = port.value)).start()
 
     events(
         ServerStartedEvent(port = server.port())

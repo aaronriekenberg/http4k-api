@@ -66,6 +66,7 @@ tasks {
 dependencies {
     implementation(platform("org.http4k:http4k-bom:${http4kVersion}"))
     implementation("org.http4k:http4k-core:${http4kVersion}")
+    implementation("org.http4k:http4k-config:${http4kVersion}")
     implementation("org.http4k:http4k-format-jackson:${http4kVersion}")
     implementation("org.http4k:http4k-server-undertow:${http4kVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")

@@ -1,5 +1,6 @@
 package org.aaron.event
 
+import org.aaron.config.requestRecordingEnabled
 import org.aaron.context.requestSharedStateKey
 import org.http4k.core.Response
 import org.http4k.core.Status
@@ -43,12 +44,14 @@ val catchAllFilter = ServerFilters.CatchAll { error ->
 }
 
 val recordHttpTransactionFilter = ResponseFilters.ReportHttpTransaction {
-    events(
-        IncomingHttpRequest(
-            uri = it.request.uri,
-            status = it.response.status.code,
-            duration = it.duration.toMillis(),
-            requestID = requestSharedStateKey(it.request).requestID,
+    if (requestRecordingEnabled.value) {
+        events(
+            IncomingHttpRequest(
+                uri = it.request.uri,
+                status = it.response.status.code,
+                duration = it.duration.toMillis(),
+                requestID = requestSharedStateKey(it.request).requestID,
+            )
         )
-    )
+    }
 }

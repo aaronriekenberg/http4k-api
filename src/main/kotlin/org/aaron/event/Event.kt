@@ -2,9 +2,7 @@ package org.aaron.event
 
 import org.aaron.config.requestRecordingEnabled
 import org.aaron.context.requestSharedStateKey
-import org.http4k.core.Response
-import org.http4k.core.Status
-import org.http4k.core.Uri
+import org.http4k.core.*
 import org.http4k.events.AutoMarshallingEvents
 import org.http4k.events.Event
 import org.http4k.events.EventFilters
@@ -43,15 +41,18 @@ val catchAllFilter = ServerFilters.CatchAll { error ->
     Response(Status.INTERNAL_SERVER_ERROR)
 }
 
-val recordHttpTransactionFilter = ResponseFilters.ReportHttpTransaction {
-    if (requestRecordingEnabled.value) {
-        events(
-            IncomingHttpRequest(
-                uri = it.request.uri,
-                status = it.response.status.code,
-                duration = it.duration.toMillis(),
-                requestID = requestSharedStateKey(it.request).requestID,
+val recordHttpTransactionFilter =
+    if (!requestRecordingEnabled.value) {
+        Filter.NoOp
+    } else {
+        ResponseFilters.ReportHttpTransaction {
+            events(
+                IncomingHttpRequest(
+                    uri = it.request.uri,
+                    status = it.response.status.code,
+                    duration = it.duration.toMillis(),
+                    requestID = requestSharedStateKey(it.request).requestID,
+                )
             )
-        )
+        }
     }
-}

@@ -15,11 +15,11 @@ jobs:
           distribution: temurin
           java-version: 21
       - name: Log versions
-          run: |
-            echo "JAVA_HOME: $JAVA_HOME"
-            java -version
+        run: |
+          echo "JAVA_HOME: $JAVA_HOME"
+          java -version
       - name: Build using Gradle shadowJar plugin # https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html
-          run: ./gradlew clean shadowJar
+        run: ./gradlew clean shadowJar
       - name: Upload build to Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')

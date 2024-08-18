@@ -14,6 +14,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Log versions
         run: |
           echo "JAVA_HOME: $JAVA_HOME"

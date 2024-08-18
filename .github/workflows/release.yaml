@@ -1,5 +1,8 @@
 name: GraalVM build
 
+permissions:
+  contents: write
+
 on:
   push:
     tags:

@@ -42,7 +42,7 @@ val catchAllFilter = ServerFilters.CatchAll { error ->
     Response(Status.INTERNAL_SERVER_ERROR)
 }
 
-val recordHttpTransactionEvent = ResponseFilters.ReportHttpTransaction {
+val recordHttpTransactionFilter = ResponseFilters.ReportHttpTransaction {
     events(
         IncomingHttpRequest(
             uri = it.request.uri,

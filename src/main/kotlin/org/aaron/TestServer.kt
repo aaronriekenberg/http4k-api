@@ -1,10 +1,7 @@
 package org.aaron
 
 import org.aaron.context.requestContextFilter
-import org.aaron.event.ServerStartedEvent
-import org.aaron.event.catchAllFilter
-import org.aaron.event.events
-import org.aaron.event.recordHttpTransactionEvent
+import org.aaron.event.*
 import org.aaron.routes.CommandsRoute
 import org.aaron.routes.HealthRoute
 import org.aaron.routes.RequestInfoRoute
@@ -29,7 +26,7 @@ fun main() {
     val appWithFilters =
         requestContextFilter()
             .then(
-                recordHttpTransactionEvent
+                recordHttpTransactionFilter
             )
             .then(catchAllFilter)
             .then(appRoutes)

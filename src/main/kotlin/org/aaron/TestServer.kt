@@ -37,8 +37,13 @@ fun main() {
 
     val server = appWithFilters.asServer(JettyLoom(port = port.value)).start()
 
+
+
     events(
-        ServerStartedEvent(port = server.port())
+        ServerStartedEvent(
+            port = server.port(),
+            backendServer = "JettyLoom",
+        )
     )
 }
 

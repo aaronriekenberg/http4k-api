@@ -18,7 +18,7 @@ data class IncomingHttpRequest(val uri: Uri, val status: Int, val duration: Long
 
 data class CatchAllExceptionEvent(val stackTrace: String) : Event
 
-data class ServerStartedEvent(val port: Int) : Event
+data class ServerStartedEvent(val port: Int, val backendServer: String) : Event
 
 // Stack filters for Events in the same way as HttpHandlers to
 // transform or add metadata to the Events.

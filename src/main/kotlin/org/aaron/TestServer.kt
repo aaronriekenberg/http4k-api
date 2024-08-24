@@ -42,7 +42,7 @@ fun main() {
     events(
         ServerStartedEvent(
             port = server.port(),
-            backendServer = "JettyLoom",
+            backendServer = "Apache4Server",
         )
     )
 }

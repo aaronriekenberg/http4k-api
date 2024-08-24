@@ -35,14 +35,14 @@ fun main() {
             .then(catchAllFilter)
             .then(appRoutes)
 
-    val server = appWithFilters.asServer(Apache4Server(port = port.value)).start()
+    val server = appWithFilters.asServer(ApacheServer(port = port.value)).start()
 
 
 
     events(
         ServerStartedEvent(
             port = server.port(),
-            backendServer = "Apache4Server",
+            backendServer = "ApacheServer",
         )
     )
 }

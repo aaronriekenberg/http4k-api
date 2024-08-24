@@ -14,6 +14,7 @@ import org.http4k.core.then
 import org.http4k.routing.bind
 import org.http4k.routing.routes
 import org.http4k.server.Apache4Server
+import org.http4k.server.Helidon
 import org.http4k.server.asServer
 
 fun main() {
@@ -35,14 +36,14 @@ fun main() {
             .then(catchAllFilter)
             .then(appRoutes)
 
-    val server = appWithFilters.asServer(Apache4Server(port = port.value)).start()
+    val server = appWithFilters.asServer(Helidon(port = port.value)).start()
 
 
 
     events(
         ServerStartedEvent(
             port = server.port(),
-            backendServer = "Apache4Server",
+            backendServer = "Helidon",
         )
     )
 }

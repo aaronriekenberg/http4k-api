@@ -13,7 +13,6 @@ import org.http4k.core.Method.GET
 import org.http4k.core.then
 import org.http4k.routing.bind
 import org.http4k.routing.routes
-import org.http4k.server.Apache4Server
 import org.http4k.server.Helidon
 import org.http4k.server.asServer
 

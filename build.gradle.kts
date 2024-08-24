@@ -68,7 +68,7 @@ dependencies {
     implementation("org.http4k:http4k-core:${http4kVersion}")
     implementation("org.http4k:http4k-config:${http4kVersion}")
     implementation("org.http4k:http4k-format-jackson:${http4kVersion}")
-    implementation("org.http4k:http4k-server-apache:${http4kVersion}")
+    implementation("org.http4k:http4k-server-apache4:${http4kVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
     testImplementation("org.http4k:http4k-testing-approval:${http4kVersion}")
     testImplementation("org.http4k:http4k-testing-hamkrest:${http4kVersion}")

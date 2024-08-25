@@ -8,6 +8,7 @@ import org.aaron.event.catchAllFilter
 import org.aaron.event.events
 import org.aaron.event.recordHttpTransactionFilter
 import org.aaron.routes.CommandsRoute
+import org.aaron.routes.GCInfoRoute
 import org.aaron.routes.HealthRoute
 import org.aaron.routes.RequestInfoRoute
 import org.http4k.core.Method.GET
@@ -23,6 +24,7 @@ fun main() {
         routes(
             "/api/v1" bind GET to routes(
                 CommandsRoute(),
+                GCInfoRoute(),
                 RequestInfoRoute(),
             ),
             HealthRoute(),

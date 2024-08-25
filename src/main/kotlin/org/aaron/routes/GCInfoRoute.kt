@@ -23,13 +23,13 @@ data class GCDTO(
     val collectionTimeMilliseconds: Long,
 
     @JsonProperty("memory_pool_names")
-    val memoryPoolNames: List<String>
+    val memoryPoolNames: List<String>,
 )
 
 data class GCInfoDTO(
 
     @field:JsonProperty("gcs")
-    val gcResponses: List<GCDTO>
+    val gcResponses: List<GCDTO>,
 )
 
 private fun GarbageCollectorMXBean.toGCDTO(): GCDTO =

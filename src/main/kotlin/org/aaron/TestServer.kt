@@ -15,7 +15,7 @@ import org.http4k.core.Method.GET
 import org.http4k.core.then
 import org.http4k.routing.bind
 import org.http4k.routing.routes
-import org.http4k.server.Undertow
+import org.http4k.server.Helidon
 import org.http4k.server.asServer
 
 fun main() {
@@ -39,9 +39,8 @@ fun main() {
             .then(appRoutes)
 
     val server = appWithFilters.asServer(
-        Undertow(
+        Helidon(
             port = port.value,
-            enableHttp2 = http2Enabled.value,
         )
     ).start()
 
@@ -49,7 +48,7 @@ fun main() {
         ServerStartedEvent(
             port = server.port(),
             http2Enabled = http2Enabled.value,
-            backendServer = "Undertow",
+            backendServer = "Helidon",
         )
     )
 }

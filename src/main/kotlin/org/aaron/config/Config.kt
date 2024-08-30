@@ -15,13 +15,6 @@ private val portLens: Lens<Environment, Port> =
 
 val port: Port = portLens(env)
 
-data class Http2Enabled(val value: Boolean)
-
-private val http2EnabledLens: Lens<Environment, Http2Enabled> =
-    EnvironmentKey.boolean().map(::Http2Enabled).defaulted("HTTP2_ENABLED", Http2Enabled(false))
-
-val http2Enabled: Http2Enabled = http2EnabledLens(env)
-
 data class RequestRecordingEnabled(val value: Boolean)
 
 private val requestRecordingEnabledLens: Lens<Environment, RequestRecordingEnabled> =

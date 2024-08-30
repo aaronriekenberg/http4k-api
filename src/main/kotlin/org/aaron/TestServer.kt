@@ -1,6 +1,5 @@
 package org.aaron
 
-import org.aaron.config.http2Enabled
 import org.aaron.config.port
 import org.aaron.context.requestContextFilter
 import org.aaron.event.ServerStartedEvent
@@ -47,7 +46,6 @@ fun main() {
     events(
         ServerStartedEvent(
             port = server.port(),
-            http2Enabled = http2Enabled.value,
             backendServer = "Helidon",
         )
     )

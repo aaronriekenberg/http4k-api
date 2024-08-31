@@ -7,6 +7,7 @@ import org.http4k.core.Method.GET
 import org.http4k.core.Status.Companion.OK
 import org.http4k.format.Jackson.auto
 import org.http4k.routing.bind
+import java.util.*
 
 data class RequestFieldsDTO(
     @JsonProperty("request_id")
@@ -46,7 +47,8 @@ object RequestInfoRoute {
                 uri = request.uri.toString(),
                 source = request.source,
             ),
-            requestHeaders = request.headers.associate { it.first to it.second },
+            requestHeaders = request.headers
+                .associateTo(TreeMap()) { it.first to it.second }
         )
 
         Response(OK).with(

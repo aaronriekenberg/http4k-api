@@ -8,10 +8,7 @@ import org.http4k.core.Status.Companion.OK
 import org.http4k.core.with
 import org.http4k.format.Jackson.auto
 import org.http4k.routing.bind
-import java.lang.management.GarbageCollectorMXBean
-import java.lang.management.ManagementFactory
-import java.lang.management.ThreadInfo
-import java.lang.management.ThreadMXBean
+import java.lang.management.*
 
 data class GCDTO(
 
@@ -42,15 +39,41 @@ private fun GarbageCollectorMXBean.toGCDTO() =
         memoryPoolNames = memoryPoolNames.toList()
     )
 
+data class OSInfoDTO(
+
+    @JsonProperty("name")
+    val name: String,
+
+    @JsonProperty("arch")
+    val arch: String,
+
+    @JsonProperty("version")
+    val version: String,
+
+    @JsonProperty("available_processors")
+    val availableProcessors: Int,
+
+    @JsonProperty("load_average")
+    val loadAverage: Double,
+)
+
+private fun OperatingSystemMXBean.toOSInfoDTO() = OSInfoDTO(
+    name = name,
+    arch = arch,
+    version = version,
+    availableProcessors = availableProcessors,
+    loadAverage = systemLoadAverage,
+)
+
 data class ThreadDTO(
     @JsonProperty("id")
     val id: Long,
 
     @JsonProperty("name")
-    val name: String?,
+    val name: String,
 
     @JsonProperty("state")
-    val state: Thread.State?,
+    val state: Thread.State,
 )
 
 private fun ThreadInfo.toThreadDTO() = ThreadDTO(
@@ -89,6 +112,9 @@ data class JVMInfoDTO(
     @JsonProperty("gc_info")
     val gcInfo: GCInfoDTO,
 
+    @JsonProperty("os_info")
+    val osInfo: OSInfoDTO,
+
     @JsonProperty("thread_info")
     val threadInfoDTO: ThreadInfoDTO,
 )
@@ -104,6 +130,7 @@ object JVMInfoRoute {
                     gcResponses = ManagementFactory.getGarbageCollectorMXBeans()
                         .map { it.toGCDTO() }
                 ),
+                osInfo = ManagementFactory.getOperatingSystemMXBean().toOSInfoDTO(),
                 threadInfoDTO = ManagementFactory.getThreadMXBean().toThreadInfoDTO(),
             )
 

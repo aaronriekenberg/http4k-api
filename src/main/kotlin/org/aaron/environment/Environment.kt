@@ -1,4 +1,4 @@
-package org.aaron.config
+package org.aaron.environment
 
 import org.http4k.config.Environment
 import org.http4k.config.EnvironmentKey

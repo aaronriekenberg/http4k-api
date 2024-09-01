@@ -1,7 +1,7 @@
 package org.aaron.event
 
-import org.aaron.config.requestRecordingEnabled
 import org.aaron.context.requestSharedStateKey
+import org.aaron.environment.requestRecordingEnabled
 import org.http4k.core.*
 import org.http4k.events.AutoMarshallingEvents
 import org.http4k.events.Event

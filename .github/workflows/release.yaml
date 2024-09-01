@@ -17,10 +17,13 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - name: Log versions
+      - name: Record versions
         run: |
           echo "JAVA_HOME: $JAVA_HOME"
           java -version
+          echo "version=$(git describe --abbrev=0 --tags)" > src/main/resources/appversion.properties
+          echo "cat src/main/resources/appversion.properties"
+          cat src/main/resources/appversion.properties
       - name: Cache Gradle packages
         uses: actions/cache@v4.0.0
         with:

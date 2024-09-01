@@ -5,6 +5,7 @@ import org.http4k.config.EnvironmentKey
 import org.http4k.lens.Lens
 import org.http4k.lens.boolean
 import org.http4k.lens.int
+import org.http4k.lens.string
 
 private val env = Environment.ENV
 
@@ -23,3 +24,11 @@ private val requestRecordingEnabledLens: Lens<Environment, RequestRecordingEnabl
 
 val requestRecordingEnabled: RequestRecordingEnabled = requestRecordingEnabledLens(env)
 
+private val versionResourceEnv = Environment.fromResource("appversion.properties")
+
+data class Version(val version: String)
+
+private val versionLens: Lens<Environment, Version> =
+    EnvironmentKey.string().map(::Version).defaulted("version", Version("UNKNOWN"))
+
+val version: Version = versionLens(versionResourceEnv)

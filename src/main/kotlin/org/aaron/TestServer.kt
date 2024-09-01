@@ -1,6 +1,7 @@
 package org.aaron
 
 import org.aaron.config.port
+import org.aaron.config.version
 import org.aaron.context.requestContextFilter
 import org.aaron.event.ServerStartedEvent
 import org.aaron.event.catchAllFilter
@@ -45,6 +46,7 @@ fun main() {
 
     events(
         ServerStartedEvent(
+            version = version.version,
             port = server.port(),
             backendServer = "Helidon",
         )

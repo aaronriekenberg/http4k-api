@@ -1,6 +1,7 @@
 # ~/.config/systemd/user/http4k.service
 
 [Unit]
+After=hugepages.service
 AssertPathExists=%h/http4k-api
 
 [Service]

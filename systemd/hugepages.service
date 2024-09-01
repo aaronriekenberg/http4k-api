@@ -1,0 +1,15 @@
+# /etc/systemd/system/hugepages.service
+# https://netflixtechblog.com/bending-pause-times-to-your-will-with-generational-zgc-256629c9386b
+
+[Unit]
+Description=hugepages
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c 'echo madvise | tee /sys/kernel/mm/transparent_hugepage/enabled'
+ExecStart=/bin/bash -c 'echo advise | tee /sys/kernel/mm/transparent_hugepage/shmem_enabled'
+ExecStart=/bin/bash -c 'echo defer | tee /sys/kernel/mm/transparent_hugepage/defrag'
+ExecStart=/bin/bash -c 'echo 1 | tee /sys/kernel/mm/transparent_hugepage/khugepaged/defrag'
+
+[Install]
+WantedBy=multi-user.target

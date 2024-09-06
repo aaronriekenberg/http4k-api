@@ -70,7 +70,7 @@ dependencies {
     implementation("org.http4k:http4k-format-jackson:${http4kVersion}")
     implementation("org.http4k:http4k-server-helidon:${http4kVersion}")
     // https://mvnrepository.com/artifact/io.helidon.webserver/helidon-webserver-http2
-    implementation("io.helidon.webserver:helidon-webserver-http2:4.1.0")
+    implementation("io.helidon.webserver:helidon-webserver-http2:4.1.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
     testImplementation("org.http4k:http4k-testing-approval:${http4kVersion}")
     testImplementation("org.http4k:http4k-testing-hamkrest:${http4kVersion}")

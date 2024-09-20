@@ -3,9 +3,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
-    kotlin("jvm") version "2.0.0"
+    kotlin("jvm")
     application
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.github.johnrengelman.shadow")
 }
 
 buildscript {
@@ -17,11 +17,6 @@ buildscript {
     dependencies {
     }
 }
-
-val http4kVersion: String by project
-//val http4kConnectVersion: String by project
-val junitVersion: String by project
-val kotlinVersion: String by project
 
 application {
     mainClass = "org.aaron.TestServerKt"
@@ -64,17 +59,16 @@ tasks {
 }
 
 dependencies {
-    implementation(platform("org.http4k:http4k-bom:${http4kVersion}"))
-    implementation("org.http4k:http4k-core:${http4kVersion}")
-    implementation("org.http4k:http4k-config:${http4kVersion}")
-    implementation("org.http4k:http4k-format-jackson:${http4kVersion}")
-    implementation("org.http4k:http4k-server-helidon:${http4kVersion}")
-    // https://mvnrepository.com/artifact/io.helidon.webserver/helidon-webserver-http2
-    implementation("io.helidon.webserver:helidon-webserver-http2:4.1.1")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}")
-    testImplementation("org.http4k:http4k-testing-approval:${http4kVersion}")
-    testImplementation("org.http4k:http4k-testing-hamkrest:${http4kVersion}")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+    implementation(platform(Http4k.bom))
+    implementation(Http4k.core)
+    implementation("org.http4k:http4k-config:_")
+    implementation(Http4k.format.jackson)
+    implementation("org.http4k:http4k-server-helidon:_")
+    implementation("io.helidon.webserver:helidon-webserver-http2:_")
+    implementation(Kotlin.stdlib)
+    testImplementation(Http4k.testing.approval)
+    testImplementation(Http4k.testing.hamkrest)
+    testImplementation(Testing.junit.jupiter.api)
+    testImplementation(Testing.junit.jupiter.engine)
 }
 

@@ -10,7 +10,12 @@ import java.util.concurrent.atomic.AtomicLong
 
 data class RequestSharedState(val requestID: Long)
 
-private val nextRequestID = AtomicLong(1)
+private object RequestIDFactory {
+    private val atomicNextRequestID = AtomicLong(1)
+
+    val nextRequestID: Long
+        get() = atomicNextRequestID.getAndAdd(1)
+}
 
 private val requestContexts = RequestContexts()
 
@@ -19,7 +24,7 @@ val requestSharedStateKey = RequestContextKey.required<RequestSharedState>(reque
 private fun addRequestSharedState() = Filter { next ->
     {
         // "modify" the request like any other Lens
-        next(it.with(requestSharedStateKey of RequestSharedState(nextRequestID.getAndAdd(1))))
+        next(it.with(requestSharedStateKey of RequestSharedState(RequestIDFactory.nextRequestID)))
     }
 }
 

@@ -47,44 +47,33 @@ fun buildGCInfoDTO(): GCInfoDTO =
 
 data class MemoryUsageDTO(
 
-    @field:JsonProperty("committed_bytes")
-    val commmittedBytes: Long,
+    @field:JsonProperty("committed_mb")
+    val committed: Double,
 
-    @field:JsonProperty("init_bytes")
-    val initBytes: Long,
+    @field:JsonProperty("init_mb")
+    val init: Double,
 
-    @field:JsonProperty("max_bytes")
-    val maxBytes: Long,
+    @field:JsonProperty("max_mb")
+    val max: Double,
 
-    @field:JsonProperty("used_bytes")
-    val usedBytes: Long,
+    @field:JsonProperty("used_mb")
+    val used: Double,
 )
+
+private fun Long.bytesToMegabytes(): Double {
+    return if (this < 0) {
+        this.toDouble()
+    } else {
+        this / 1024.0 / 1024.0
+    }
+}
 
 fun MemoryUsage.toMemoryUsageDTO(): MemoryUsageDTO =
     MemoryUsageDTO(
-        commmittedBytes = committed,
-        initBytes = init,
-        maxBytes = max,
-        usedBytes = used
-    )
-
-data class MemoryPoolDTO(
-
-    @field:JsonProperty("name")
-    val name: String,
-
-    @field:JsonProperty("type")
-    val type: MemoryType,
-
-    @field:JsonProperty("usage")
-    val usage: MemoryUsageDTO,
-)
-
-fun MemoryPoolMXBean.toMemoryPoolDTO(): MemoryPoolDTO =
-    MemoryPoolDTO(
-        name = name,
-        type = type,
-        usage = usage.toMemoryUsageDTO(),
+        committed = committed.bytesToMegabytes(),
+        init = init.bytesToMegabytes(),
+        max = max.bytesToMegabytes(),
+        used = used.bytesToMegabytes(),
     )
 
 data class MemoryInfoDTO(
@@ -94,9 +83,6 @@ data class MemoryInfoDTO(
 
     @field:JsonProperty("non_heap_memory_usage")
     val nonHeapMemoryUsage: MemoryUsageDTO,
-
-    @field:JsonProperty("memory_pools")
-    val memoryPools: List<MemoryPoolDTO>,
 )
 
 fun buildMemoryInfoDTO(): MemoryInfoDTO {
@@ -104,7 +90,6 @@ fun buildMemoryInfoDTO(): MemoryInfoDTO {
     return MemoryInfoDTO(
         heapMemoryUsage = memoryMXBean.heapMemoryUsage.toMemoryUsageDTO(),
         nonHeapMemoryUsage = memoryMXBean.nonHeapMemoryUsage.toMemoryUsageDTO(),
-        memoryPools = ManagementFactory.getMemoryPoolMXBeans().map { it.toMemoryPoolDTO() }
     )
 }
 

@@ -28,7 +28,7 @@ data class GCDTO(
 data class GCInfoDTO(
 
     @JsonProperty("gcs")
-    val gcResponses: List<GCDTO>,
+    val gcDTOs: List<GCDTO>,
 )
 
 private fun GarbageCollectorMXBean.toGCDTO() =
@@ -38,6 +38,75 @@ private fun GarbageCollectorMXBean.toGCDTO() =
         collectionTimeMilliseconds = collectionTime,
         memoryPoolNames = memoryPoolNames.toList()
     )
+
+fun buildGCInfoDTO(): GCInfoDTO =
+    GCInfoDTO(
+        gcDTOs = ManagementFactory.getGarbageCollectorMXBeans()
+            .map { it.toGCDTO() }
+    )
+
+data class MemoryUsageDTO(
+
+    @field:JsonProperty("committed_bytes")
+    val commmittedBytes: Long,
+
+    @field:JsonProperty("init_bytes")
+    val initBytes: Long,
+
+    @field:JsonProperty("max_bytes")
+    val maxBytes: Long,
+
+    @field:JsonProperty("used_bytes")
+    val usedBytes: Long,
+)
+
+fun MemoryUsage.toMemoryUsageDTO(): MemoryUsageDTO =
+    MemoryUsageDTO(
+        commmittedBytes = committed,
+        initBytes = init,
+        maxBytes = max,
+        usedBytes = used
+    )
+
+data class MemoryPoolDTO(
+
+    @field:JsonProperty("name")
+    val name: String,
+
+    @field:JsonProperty("type")
+    val type: MemoryType,
+
+    @field:JsonProperty("usage")
+    val usage: MemoryUsageDTO,
+)
+
+fun MemoryPoolMXBean.toMemoryPoolDTO(): MemoryPoolDTO =
+    MemoryPoolDTO(
+        name = name,
+        type = type,
+        usage = usage.toMemoryUsageDTO(),
+    )
+
+data class MemoryInfoDTO(
+
+    @field:JsonProperty("heap_memory_usage")
+    val heapMemoryUsage: MemoryUsageDTO,
+
+    @field:JsonProperty("non_heap_memory_usage")
+    val nonHeapMemoryUsage: MemoryUsageDTO,
+
+    @field:JsonProperty("memory_pools")
+    val memoryPools: List<MemoryPoolDTO>,
+)
+
+fun buildMemoryInfoDTO(): MemoryInfoDTO {
+    val memoryMXBean = ManagementFactory.getMemoryMXBean()
+    return MemoryInfoDTO(
+        heapMemoryUsage = memoryMXBean.heapMemoryUsage.toMemoryUsageDTO(),
+        nonHeapMemoryUsage = memoryMXBean.nonHeapMemoryUsage.toMemoryUsageDTO(),
+        memoryPools = ManagementFactory.getMemoryPoolMXBeans().map { it.toMemoryPoolDTO() }
+    )
+}
 
 data class OSInfoDTO(
 
@@ -112,6 +181,9 @@ data class JVMInfoDTO(
     @JsonProperty("gc_info")
     val gcInfo: GCInfoDTO,
 
+    @JsonProperty("memory_info")
+    val memoryInfo: MemoryInfoDTO,
+
     @JsonProperty("os_info")
     val osInfo: OSInfoDTO,
 
@@ -126,10 +198,8 @@ object JVMInfoRoute {
         "/jvm_info" bind GET to {
 
             val jvmInfoDTO = JVMInfoDTO(
-                gcInfo = GCInfoDTO(
-                    gcResponses = ManagementFactory.getGarbageCollectorMXBeans()
-                        .map { it.toGCDTO() }
-                ),
+                gcInfo = buildGCInfoDTO(),
+                memoryInfo = buildMemoryInfoDTO(),
                 osInfo = ManagementFactory.getOperatingSystemMXBean().toOSInfoDTO(),
                 threadInfoDTO = ManagementFactory.getThreadMXBean().toThreadInfoDTO(),
             )

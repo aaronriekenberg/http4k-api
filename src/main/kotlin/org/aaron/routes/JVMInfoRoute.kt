@@ -9,6 +9,7 @@ import org.http4k.core.with
 import org.http4k.format.Jackson.auto
 import org.http4k.routing.bind
 import java.lang.management.*
+import kotlin.math.round
 
 data class GCDTO(
 
@@ -47,33 +48,35 @@ fun buildGCInfoDTO(): GCInfoDTO =
 
 data class MemoryUsageDTO(
 
-    @field:JsonProperty("committed_mb")
-    val committed: Double,
+    @field:JsonProperty("committed")
+    val committed: String,
 
-    @field:JsonProperty("init_mb")
-    val init: Double,
+    @field:JsonProperty("init")
+    val init: String,
 
-    @field:JsonProperty("max_mb")
-    val max: Double,
+    @field:JsonProperty("max")
+    val max: String,
 
-    @field:JsonProperty("used_mb")
-    val used: Double,
+    @field:JsonProperty("used")
+    val used: String,
 )
 
-private fun Long.bytesToMegabytes(): Double {
+private fun Long.bytesToMiB(): String {
     return if (this < 0) {
-        this.toDouble()
+        "$this"
     } else {
-        this / 1024.0 / 1024.0
+        var mb = this / 1024.0 / 1024.0
+        mb = round(mb * 100) / 100.0
+        "${mb} MiB"
     }
 }
 
 fun MemoryUsage.toMemoryUsageDTO(): MemoryUsageDTO =
     MemoryUsageDTO(
-        committed = committed.bytesToMegabytes(),
-        init = init.bytesToMegabytes(),
-        max = max.bytesToMegabytes(),
-        used = used.bytesToMegabytes(),
+        committed = committed.bytesToMiB(),
+        init = init.bytesToMiB(),
+        max = max.bytesToMiB(),
+        used = used.bytesToMiB(),
     )
 
 data class MemoryInfoDTO(

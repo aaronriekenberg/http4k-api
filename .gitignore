@@ -4,3 +4,4 @@ build/
 gc.log*
 logs/output*
 logs/lock*
+.kotlin/

@@ -65,8 +65,6 @@ dependencies {
     implementation(Http4k.format.jackson)
     implementation(Http4k.server.jetty)
     implementation("org.eclipse.jetty.http2:jetty-http2-server:_")
-//    implementation("org.http4k:http4k-server-helidon:_")
-//    implementation("io.helidon.webserver:helidon-webserver-http2:_")
     implementation(Kotlin.stdlib)
     testImplementation(Http4k.testing.approval)
     testImplementation(Http4k.testing.hamkrest)

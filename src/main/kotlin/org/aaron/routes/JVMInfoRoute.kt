@@ -67,7 +67,7 @@ private fun Long.bytesToMiB(): String {
     } else {
         var mb = this / 1024.0 / 1024.0
         mb = round(mb * 100) / 100.0
-        "${mb} MiB"
+        "$mb MiB"
     }
 }
 

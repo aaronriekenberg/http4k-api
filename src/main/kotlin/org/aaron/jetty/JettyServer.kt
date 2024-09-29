@@ -10,15 +10,16 @@ import org.http4k.server.ConnectorBuilder
 import org.http4k.server.Jetty
 import java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor
 
-fun JettyLoomH2C(port: Int) = Jetty(port,
-    Server(QueuedThreadPool().apply {
+fun jettyLoomH2C(port: Int) = Jetty(
+    port = port,
+    server = Server(QueuedThreadPool().apply {
         virtualThreadsExecutor = newVirtualThreadPerTaskExecutor();
     }).apply {
-        addConnector(jettyH2C(port)(this))
-    }
+        addConnector(jettyH2CConnector(port)(this))
+    },
 )
 
-fun jettyH2C(http2Port: Int): ConnectorBuilder =
+fun jettyH2CConnector(http2Port: Int): ConnectorBuilder =
     { server: Server ->
 
         // The HTTP configuration object.

@@ -7,7 +7,7 @@ import org.aaron.event.ServerStartedEvent
 import org.aaron.event.catchAllFilter
 import org.aaron.event.events
 import org.aaron.event.recordHttpTransactionFilter
-import org.aaron.jetty.JettyLoomH2C
+import org.aaron.jetty.jettyLoomH2C
 import org.aaron.routes.*
 import org.http4k.core.Method.GET
 import org.http4k.core.then
@@ -37,7 +37,7 @@ fun main() {
             .then(appRoutes)
 
     val server = appWithFilters.asServer(
-        JettyLoomH2C(
+        jettyLoomH2C(
             port = port.value,
         )
     ).start()
@@ -46,7 +46,7 @@ fun main() {
         ServerStartedEvent(
             version = version.version,
             port = server.port(),
-            backendServer = "JettyLoomH2C",
+            backendServer = "jettyLoomH2C",
         )
     )
 }

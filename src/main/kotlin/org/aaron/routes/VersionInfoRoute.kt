@@ -1,6 +1,7 @@
 package org.aaron.routes
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.aaron.environment.env
 import org.aaron.environment.version
 import org.http4k.core.Body
 import org.http4k.core.Method.GET
@@ -21,7 +22,7 @@ object VersionInfoRoute {
     operator fun invoke() = "/version_info" bind GET to { request ->
 
         val versionInfoDTO = VersionInfoDTO(
-            version = version.version,
+            version = version(env),
         )
 
         Response(OK).with(

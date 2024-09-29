@@ -1,6 +1,7 @@
 package org.aaron.event
 
 import org.aaron.context.requestSharedStateKey
+import org.aaron.environment.env
 import org.aaron.environment.requestRecordingEnabled
 import org.http4k.core.*
 import org.http4k.events.AutoMarshallingEvents
@@ -42,7 +43,7 @@ val catchAllFilter = ServerFilters.CatchAll { error ->
 }
 
 val recordHttpTransactionFilter =
-    if (!requestRecordingEnabled.value) {
+    if (!requestRecordingEnabled(env)) {
         Filter.NoOp
     } else {
         ResponseFilters.ReportHttpTransaction {

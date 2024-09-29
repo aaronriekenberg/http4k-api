@@ -1,6 +1,7 @@
 package org.aaron
 
 import org.aaron.context.requestContextFilter
+import org.aaron.environment.env
 import org.aaron.environment.port
 import org.aaron.environment.version
 import org.aaron.event.ServerStartedEvent
@@ -38,13 +39,13 @@ fun main() {
 
     val server = appWithFilters.asServer(
         jettyLoomH2C(
-            port = port.value,
+            port = port(env).value,
         )
     ).start()
 
     events(
         ServerStartedEvent(
-            version = version.version,
+            version = version(env),
             port = server.port(),
             backendServer = "jettyLoomH2C",
         )

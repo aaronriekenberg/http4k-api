@@ -13,7 +13,7 @@ import java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor
 fun jettyLoomH2C(port: Int) = Jetty(
     port = port,
     server = Server(QueuedThreadPool().apply {
-        virtualThreadsExecutor = newVirtualThreadPerTaskExecutor();
+        virtualThreadsExecutor = newVirtualThreadPerTaskExecutor()
     }).apply {
         addConnector(jettyH2CConnector(port)(this))
     },

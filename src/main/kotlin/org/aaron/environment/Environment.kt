@@ -17,7 +17,6 @@ private val defaultConfig = Environment.defaults(
     version of "UNKNOWN",
 )
 
-val env = Environment.fromResource("appversion.properties") overrides
-        Environment.JVM_PROPERTIES overrides
+val env = Environment.JVM_PROPERTIES overrides
         Environment.ENV overrides
         defaultConfig

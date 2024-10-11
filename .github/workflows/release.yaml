@@ -23,9 +23,6 @@ jobs:
           echo "JAVA_HOME: $JAVA_HOME"
           java --version
           native-image --version
-          echo "version=$(git describe --abbrev=0 --tags)" > src/main/resources/appversion.properties
-          echo "cat src/main/resources/appversion.properties"
-          cat src/main/resources/appversion.properties
       - name: Build using Gradle shadowJar plugin # https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html
         run: ./gradlew nativeCompile
       - name: Upload build to Release

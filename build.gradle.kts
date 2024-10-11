@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm")
     application
     id("com.gradleup.shadow")
+    id("org.graalvm.buildtools.native")
 }
 
 buildscript {

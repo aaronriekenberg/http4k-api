@@ -1,4 +1,4 @@
-name: GraalVM build
+name: Release Build
 
 permissions:
   contents: write

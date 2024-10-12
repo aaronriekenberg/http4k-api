@@ -1,36 +1,36 @@
 package org.aaron.routes
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.squareup.moshi.Json
 import org.aaron.context.requestSharedStateKey
 import org.http4k.core.*
 import org.http4k.core.Method.GET
 import org.http4k.core.Status.Companion.OK
-import org.http4k.format.Jackson.auto
+import org.http4k.format.Moshi.auto
 import org.http4k.routing.bind
 import java.util.*
 
 data class RequestFieldsDTO(
-    @JsonProperty("request_id")
+    @Json(name = "request_id")
     val requestID: Long,
 
-    @JsonProperty("method")
+    @Json(name = "method")
     val method: Method,
 
-    @JsonProperty("version")
+    @Json(name = "version")
     val version: String,
 
-    @JsonProperty("uri")
+    @Json(name = "uri")
     val uri: String,
 
-    @JsonProperty("source")
+    @Json(name = "source")
     val source: RequestSource?,
 )
 
 data class RequestInfoDTO(
-    @JsonProperty("request_fields")
+    @Json(name = "request_fields")
     val requestFields: RequestFieldsDTO,
 
-    @JsonProperty("request_headers")
+    @Json(name = "request_headers")
     val requestHeaders: Map<String, String?>,
 )
 

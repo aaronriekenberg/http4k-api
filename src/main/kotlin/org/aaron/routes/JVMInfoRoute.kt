@@ -1,34 +1,34 @@
 package org.aaron.routes
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.squareup.moshi.Json
 import org.http4k.core.Body
 import org.http4k.core.Method.GET
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.with
-import org.http4k.format.Jackson.auto
+import org.http4k.format.Moshi.auto
 import org.http4k.routing.bind
 import java.lang.management.*
 import kotlin.math.round
 
 data class GCDTO(
 
-    @JsonProperty("name")
+    @Json(name = "name")
     val name: String,
 
-    @JsonProperty("collection_count")
+    @Json(name = "collection_count")
     val collectionCount: Long,
 
-    @JsonProperty("collection_time_milliseconds")
+    @Json(name = "collection_time_milliseconds")
     val collectionTimeMilliseconds: Long,
 
-    @JsonProperty("memory_pool_names")
+    @Json(name = "memory_pool_names")
     val memoryPoolNames: List<String>,
 )
 
 data class GCInfoDTO(
 
-    @JsonProperty("gcs")
+    @Json(name = "gcs")
     val gcDTOs: List<GCDTO>,
 )
 
@@ -48,16 +48,16 @@ fun buildGCInfoDTO(): GCInfoDTO =
 
 data class MemoryUsageDTO(
 
-    @field:JsonProperty("committed")
+    @Json(name = "committed")
     val committed: String,
 
-    @field:JsonProperty("init")
+    @Json(name = "init")
     val init: String,
 
-    @field:JsonProperty("max")
+    @Json(name = "max")
     val max: String,
 
-    @field:JsonProperty("used")
+    @Json(name = "used")
     val used: String,
 )
 
@@ -81,10 +81,10 @@ fun MemoryUsage.toMemoryUsageDTO(): MemoryUsageDTO =
 
 data class MemoryInfoDTO(
 
-    @field:JsonProperty("heap_memory_usage")
+    @Json(name = "heap_memory_usage")
     val heapMemoryUsage: MemoryUsageDTO,
 
-    @field:JsonProperty("non_heap_memory_usage")
+    @Json(name = "non_heap_memory_usage")
     val nonHeapMemoryUsage: MemoryUsageDTO,
 )
 
@@ -98,19 +98,19 @@ fun buildMemoryInfoDTO(): MemoryInfoDTO {
 
 data class OSInfoDTO(
 
-    @JsonProperty("name")
+    @Json(name = "name")
     val name: String,
 
-    @JsonProperty("arch")
+    @Json(name = "arch")
     val arch: String,
 
-    @JsonProperty("version")
+    @Json(name = "version")
     val version: String,
 
-    @JsonProperty("available_processors")
+    @Json(name = "available_processors")
     val availableProcessors: Int,
 
-    @JsonProperty("load_average")
+    @Json(name = "load_average")
     val loadAverage: Double,
 )
 
@@ -123,13 +123,13 @@ private fun OperatingSystemMXBean.toOSInfoDTO() = OSInfoDTO(
 )
 
 data class ThreadDTO(
-    @JsonProperty("id")
+    @Json(name = "id")
     val id: Long,
 
-    @JsonProperty("name")
+    @Json(name = "name")
     val name: String,
 
-    @JsonProperty("state")
+    @Json(name = "state")
     val state: Thread.State,
 )
 
@@ -141,16 +141,16 @@ private fun ThreadInfo.toThreadDTO() = ThreadDTO(
 
 data class ThreadInfoDTO(
 
-    @JsonProperty("thread_count")
+    @Json(name = "thread_count")
     val threadCount: Int,
 
-    @JsonProperty("peak_thread_count")
+    @Json(name = "peak_thread_count")
     val peakThreadCount: Int,
 
-    @JsonProperty("total_started_thread_count")
+    @Json(name = "total_started_thread_count")
     val totalStartedThreadCount: Long,
 
-    @JsonProperty("threads")
+    @Json(name = "threads")
     val threads: List<ThreadDTO>,
 )
 
@@ -166,16 +166,16 @@ private fun ThreadMXBean.toThreadInfoDTO() =
     )
 
 data class JVMInfoDTO(
-    @JsonProperty("gc_info")
+    @Json(name = "gc_info")
     val gcInfo: GCInfoDTO,
 
-    @JsonProperty("memory_info")
+    @Json(name = "memory_info")
     val memoryInfo: MemoryInfoDTO,
 
-    @JsonProperty("os_info")
+    @Json(name = "os_info")
     val osInfo: OSInfoDTO,
 
-    @JsonProperty("thread_info")
+    @Json(name = "thread_info")
     val threadInfoDTO: ThreadInfoDTO,
 )
 

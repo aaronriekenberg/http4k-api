@@ -62,7 +62,7 @@ dependencies {
     implementation(platform(Http4k.bom))
     implementation(Http4k.core)
     implementation("org.http4k:http4k-config:_")
-    implementation(Http4k.format.jackson)
+    implementation(Http4k.format.moshi)
     implementation(Http4k.server.jetty)
     implementation("org.eclipse.jetty.http2:jetty-http2-server:_")
     implementation(Kotlin.stdlib)

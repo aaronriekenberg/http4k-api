@@ -1,6 +1,6 @@
 package org.aaron.routes
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.squareup.moshi.Json
 import org.http4k.core.Body
 import org.http4k.core.Method.GET
 import org.http4k.core.Response
@@ -8,7 +8,7 @@ import org.http4k.core.Status.Companion.NOT_FOUND
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.Status.Companion.TOO_MANY_REQUESTS
 import org.http4k.core.with
-import org.http4k.format.Jackson.auto
+import org.http4k.format.Moshi.auto
 import org.http4k.routing.bind
 import org.http4k.routing.path
 import org.http4k.routing.routes
@@ -21,30 +21,30 @@ import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 
 data class CommandInfoDTO(
-    @JsonProperty("id")
+    @Json(name = "id")
     val id: String,
 
-    @JsonProperty("description")
+    @Json(name = "description")
     val description: String,
 
-    @JsonProperty("command")
+    @Json(name = "command")
     val command: String,
 
-    @JsonProperty("args")
+    @Json(name = "args")
     val args: List<String> = listOf(),
 )
 
 data class RunCommandResultDTO(
-    @JsonProperty("command_info")
+    @Json(name = "command_info")
     val commandInfo: CommandInfoDTO,
 
-    @JsonProperty("now")
+    @Json(name = "now")
     val now: String,
 
-    @JsonProperty("command_duration_ms")
+    @Json(name = "command_duration_ms")
     val commandDurationMilliseconds: Long,
 
-    @JsonProperty("command_output")
+    @Json(name = "command_output")
     val commandOutput: String,
 )
 

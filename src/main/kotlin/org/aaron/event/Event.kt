@@ -3,6 +3,7 @@ package org.aaron.event
 import org.aaron.context.requestSharedStateKey
 import org.aaron.environment.env
 import org.aaron.environment.requestRecordingEnabled
+import org.aaron.json.jsonFormat
 import org.http4k.core.*
 import org.http4k.events.AutoMarshallingEvents
 import org.http4k.events.Event
@@ -10,7 +11,6 @@ import org.http4k.events.EventFilters
 import org.http4k.events.then
 import org.http4k.filter.ResponseFilters
 import org.http4k.filter.ServerFilters
-import org.http4k.format.Jackson
 import java.io.PrintWriter
 import java.io.StringWriter
 
@@ -29,7 +29,7 @@ val events =
     EventFilters.AddTimestamp()
         .then(EventFilters.AddEventName())
 //            .then(EventFilters.AddZipkinTraces())
-        .then(AutoMarshallingEvents(Jackson))
+        .then(AutoMarshallingEvents(jsonFormat))
 
 
 val catchAllFilter = ServerFilters.CatchAll { error ->

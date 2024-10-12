@@ -1,6 +1,6 @@
 package org.aaron.routes
 
-import com.fasterxml.jackson.annotation.JsonProperty
+import com.squareup.moshi.Json
 import org.aaron.environment.env
 import org.aaron.environment.version
 import org.http4k.core.Body
@@ -8,11 +8,11 @@ import org.http4k.core.Method.GET
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.with
-import org.http4k.format.Jackson.auto
+import org.http4k.format.Moshi.auto
 import org.http4k.routing.bind
 
 data class VersionInfoDTO(
-    @JsonProperty("version")
+    @Json(name = "version")
     val version: String,
 )
 

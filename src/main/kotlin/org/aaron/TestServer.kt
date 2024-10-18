@@ -3,6 +3,7 @@ package org.aaron
 import org.aaron.context.requestContextFilter
 import org.aaron.environment.env
 import org.aaron.environment.port
+import org.aaron.environment.unixSocketPath
 import org.aaron.environment.version
 import org.aaron.event.ServerStartedEvent
 import org.aaron.event.catchAllFilter
@@ -47,6 +48,7 @@ fun main() {
         ServerStartedEvent(
             version = version(env),
             port = server.port(),
+            unixPath = unixSocketPath(env),
             backendServer = "jettyLoomH2C",
         )
     )

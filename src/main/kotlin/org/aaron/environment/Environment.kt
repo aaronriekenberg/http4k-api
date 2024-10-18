@@ -8,6 +8,7 @@ import org.http4k.lens.port
 import org.http4k.lens.string
 
 val port = EnvironmentKey.port().required("port")
+val unixSocketPath = EnvironmentKey.string().optional("unix_socket_path")
 val requestRecordingEnabled = EnvironmentKey.boolean().required("request_recording_enabled")
 val version = EnvironmentKey.string().required("version")
 

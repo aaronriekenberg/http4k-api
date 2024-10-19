@@ -141,6 +141,9 @@ private fun ThreadInfo.toThreadDTO() = ThreadDTO(
 
 data class ThreadInfoDTO(
 
+    @Json(name = "current_thread_is_virtual")
+    val currentThreadIsVirtual: Boolean,
+
     @Json(name = "thread_count")
     val threadCount: Int,
 
@@ -156,6 +159,7 @@ data class ThreadInfoDTO(
 
 private fun ThreadMXBean.toThreadInfoDTO() =
     ThreadInfoDTO(
+        currentThreadIsVirtual = Thread.currentThread().isVirtual,
         threadCount = threadCount,
         peakThreadCount = peakThreadCount,
         totalStartedThreadCount = totalStartedThreadCount,

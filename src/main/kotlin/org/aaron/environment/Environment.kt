@@ -9,15 +9,18 @@ import org.http4k.lens.string
 
 val port = EnvironmentKey.port().required("port")
 val requestRecordingEnabled = EnvironmentKey.boolean().required("request_recording_enabled")
-val version = EnvironmentKey.string().required("version")
 
 private val defaultConfig = Environment.defaults(
     port of Port(8080),
     requestRecordingEnabled of false,
-    version of "UNKNOWN",
 )
 
-val env = Environment.fromResource("appversion.properties") overrides
-        Environment.JVM_PROPERTIES overrides
+val env = Environment.JVM_PROPERTIES overrides
         Environment.ENV overrides
         defaultConfig
+
+private val versionEnv = Environment.fromResource("appversion.properties")
+
+private val versionKey = EnvironmentKey.string().required("version")
+
+val version = versionKey(versionEnv)

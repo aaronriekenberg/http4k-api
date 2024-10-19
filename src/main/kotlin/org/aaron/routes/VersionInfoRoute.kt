@@ -1,7 +1,6 @@
 package org.aaron.routes
 
 import com.squareup.moshi.Json
-import org.aaron.environment.env
 import org.aaron.environment.version
 import org.http4k.core.Body
 import org.http4k.core.Method.GET
@@ -22,7 +21,7 @@ object VersionInfoRoute {
     operator fun invoke() = "/version_info" bind GET to { request ->
 
         val versionInfoDTO = VersionInfoDTO(
-            version = version(env),
+            version = version,
         )
 
         Response(OK).with(

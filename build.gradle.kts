@@ -7,6 +7,7 @@ plugins {
     application
     id("com.gradleup.shadow")
     id("com.google.devtools.ksp")
+    id("org.graalvm.buildtools.native")
 }
 
 buildscript {

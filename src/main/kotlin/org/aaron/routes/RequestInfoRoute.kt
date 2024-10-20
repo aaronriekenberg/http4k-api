@@ -2,13 +2,29 @@ package org.aaron.routes
 
 import com.squareup.moshi.Json
 import org.aaron.context.requestSharedStateKey
-import org.http4k.core.*
+import org.aaron.json.jsonFormat
+import org.http4k.core.Method
 import org.http4k.core.Method.GET
+import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
-import org.http4k.format.Moshi.auto
+import org.http4k.core.with
 import org.http4k.routing.bind
+import se.ansman.kotshi.JsonSerializable
 import java.util.*
 
+@JsonSerializable
+data class RequestSourceDTO(
+    @Json(name = "address")
+    val address: String,
+
+    @Json(name = "port")
+    val port: Int?,
+
+    @Json(name = "scheme")
+    val scheme: String?,
+)
+
+@JsonSerializable
 data class RequestFieldsDTO(
     @Json(name = "request_id")
     val requestID: Long,
@@ -23,9 +39,10 @@ data class RequestFieldsDTO(
     val uri: String,
 
     @Json(name = "source")
-    val source: RequestSource?,
+    val source: RequestSourceDTO?,
 )
 
+@JsonSerializable
 data class RequestInfoDTO(
     @Json(name = "request_fields")
     val requestFields: RequestFieldsDTO,
@@ -34,7 +51,7 @@ data class RequestInfoDTO(
     val requestHeaders: Map<String, String?>,
 )
 
-val requestInfoDTOLens = Body.auto<RequestInfoDTO>().toLens()
+val requestInfoDTOLens = jsonFormat.autoBody<RequestInfoDTO>().toLens()
 
 object RequestInfoRoute {
     operator fun invoke() = "/request_info" bind GET to { request ->
@@ -45,7 +62,13 @@ object RequestInfoRoute {
                 method = request.method,
                 version = request.version,
                 uri = request.uri.toString(),
-                source = request.source,
+                source = request.source?.let {
+                    RequestSourceDTO(
+                        address = it.address,
+                        port = it.port,
+                        scheme = it.scheme,
+                    )
+                }
             ),
             requestHeaders = request.headers
                 .associateTo(TreeMap()) { it.first to it.second }

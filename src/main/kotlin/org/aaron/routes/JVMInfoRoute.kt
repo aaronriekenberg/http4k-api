@@ -1,16 +1,17 @@
 package org.aaron.routes
 
 import com.squareup.moshi.Json
-import org.http4k.core.Body
+import org.aaron.json.jsonFormat
 import org.http4k.core.Method.GET
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.with
-import org.http4k.format.Moshi.auto
 import org.http4k.routing.bind
+import se.ansman.kotshi.JsonSerializable
 import java.lang.management.*
 import kotlin.math.round
 
+@JsonSerializable
 data class GCDTO(
 
     @Json(name = "name")
@@ -26,6 +27,7 @@ data class GCDTO(
     val memoryPoolNames: List<String>,
 )
 
+@JsonSerializable
 data class GCInfoDTO(
 
     @Json(name = "gcs")
@@ -46,6 +48,7 @@ fun buildGCInfoDTO(): GCInfoDTO =
             .map { it.toGCDTO() }
     )
 
+@JsonSerializable
 data class MemoryUsageDTO(
 
     @Json(name = "committed")
@@ -79,6 +82,7 @@ fun MemoryUsage.toMemoryUsageDTO(): MemoryUsageDTO =
         used = used.bytesToMiB(),
     )
 
+@JsonSerializable
 data class MemoryInfoDTO(
 
     @Json(name = "heap_memory_usage")
@@ -96,6 +100,7 @@ fun buildMemoryInfoDTO(): MemoryInfoDTO {
     )
 }
 
+@JsonSerializable
 data class OSInfoDTO(
 
     @Json(name = "name")
@@ -122,6 +127,7 @@ private fun OperatingSystemMXBean.toOSInfoDTO() = OSInfoDTO(
     loadAverage = systemLoadAverage,
 )
 
+@JsonSerializable
 data class ThreadDTO(
     @Json(name = "id")
     val id: Long,
@@ -139,6 +145,7 @@ private fun ThreadInfo.toThreadDTO() = ThreadDTO(
     state = threadState,
 )
 
+@JsonSerializable
 data class ThreadInfoDTO(
 
     @Json(name = "current_thread_is_virtual")
@@ -169,6 +176,7 @@ private fun ThreadMXBean.toThreadInfoDTO() =
             .sortedBy { it.id }
     )
 
+@JsonSerializable
 data class JVMInfoDTO(
     @Json(name = "gc_info")
     val gcInfo: GCInfoDTO,
@@ -183,7 +191,7 @@ data class JVMInfoDTO(
     val threadInfoDTO: ThreadInfoDTO,
 )
 
-val jvmInfoDTOLens = Body.auto<JVMInfoDTO>().toLens()
+val jvmInfoDTOLens = jsonFormat.autoBody<JVMInfoDTO>().toLens()
 
 object JVMInfoRoute {
     operator fun invoke() =

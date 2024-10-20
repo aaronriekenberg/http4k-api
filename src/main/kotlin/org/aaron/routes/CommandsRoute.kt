@@ -1,17 +1,17 @@
 package org.aaron.routes
 
 import com.squareup.moshi.Json
-import org.http4k.core.Body
+import org.aaron.json.jsonFormat
 import org.http4k.core.Method.GET
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.NOT_FOUND
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.Status.Companion.TOO_MANY_REQUESTS
 import org.http4k.core.with
-import org.http4k.format.Moshi.auto
 import org.http4k.routing.bind
 import org.http4k.routing.path
 import org.http4k.routing.routes
+import se.ansman.kotshi.JsonSerializable
 import java.io.InputStreamReader
 import java.time.Instant
 import java.time.ZoneOffset
@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 
+@JsonSerializable
 data class CommandInfoDTO(
     @Json(name = "id")
     val id: String,
@@ -34,6 +35,7 @@ data class CommandInfoDTO(
     val args: List<String> = listOf(),
 )
 
+@JsonSerializable
 data class RunCommandResultDTO(
     @Json(name = "command_info")
     val commandInfo: CommandInfoDTO,
@@ -48,9 +50,9 @@ data class RunCommandResultDTO(
     val commandOutput: String,
 )
 
-val allCommandsListResultLens = Body.auto<List<CommandInfoDTO>>().toLens()
+val allCommandsListResultLens = jsonFormat.autoBody<List<CommandInfoDTO>>().toLens()
 
-val runCommandResultLens = Body.auto<RunCommandResultDTO>().toLens()
+val runCommandResultLens = jsonFormat.autoBody<RunCommandResultDTO>().toLens()
 
 object CommandsRoute {
     operator fun invoke() = "/commands" bind GET to

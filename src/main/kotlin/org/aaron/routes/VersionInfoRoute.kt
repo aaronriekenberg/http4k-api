@@ -1,24 +1,23 @@
 package org.aaron.routes
 
-import com.squareup.moshi.Json
 import org.aaron.environment.version
-import org.http4k.core.Body
+import org.aaron.json.jsonFormat
 import org.http4k.core.Method.GET
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.with
-import org.http4k.format.Moshi.auto
 import org.http4k.routing.bind
+import se.ansman.kotshi.JsonSerializable
 
+@JsonSerializable
 data class VersionInfoDTO(
-    @Json(name = "version")
     val version: String,
 )
 
-val versionInfoDTOLens = Body.auto<VersionInfoDTO>().toLens()
+val versionInfoDTOLens = jsonFormat.autoBody<VersionInfoDTO>().toLens()
 
 object VersionInfoRoute {
-    operator fun invoke() = "/version_info" bind GET to { request ->
+    operator fun invoke() = "/version_info" bind GET to {
 
         val versionInfoDTO = VersionInfoDTO(
             version = version,

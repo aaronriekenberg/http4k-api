@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm")
     application
     id("com.gradleup.shadow")
+    id("com.google.devtools.ksp")
 }
 
 buildscript {
@@ -58,6 +59,12 @@ tasks {
     }
 }
 
+configurations {
+    all {
+        exclude(group = "org.jetbrains.kotlin", module = "kotlin-reflect")
+    }
+}
+
 dependencies {
     implementation(platform(Http4k.bom))
     implementation(Http4k.core)
@@ -66,6 +73,8 @@ dependencies {
     implementation(Http4k.server.jetty)
     implementation("org.eclipse.jetty.http2:jetty-http2-server:_")
     implementation(Kotlin.stdlib)
+    implementation("se.ansman.kotshi:api:_")
+    ksp("se.ansman.kotshi:compiler:_")
     testImplementation(Http4k.testing.approval)
     testImplementation(Http4k.testing.hamkrest)
     testImplementation(Testing.junit.jupiter.api)

@@ -13,36 +13,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4.2.2
+      - uses: graalvm/setup-graalvm@v1
         with:
-          distribution: temurin
-          java-version: 21
+          java-version: '21'
+          distribution: 'graalvm-community' # See 'Options' for all available distributions
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Record versions
         run: |
+          echo "GRAALVM_HOME: $GRAALVM_HOME"
           echo "JAVA_HOME: $JAVA_HOME"
-          java -version
+          java --version
+          native-image --version
           echo "version=$(git describe --abbrev=0 --tags)" > src/main/resources/appversion.properties
           echo "cat src/main/resources/appversion.properties"
           cat src/main/resources/appversion.properties
-      - name: Cache Gradle packages
-        uses: actions/cache@v4.0.0
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Build using Gradle shadowJar plugin # https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html
-        run: ./gradlew clean shadowJar
-      - name: Cleanup Gradle Cache
-        # Remove some files from the Gradle cache, so they aren't cached by GitHub Actions.
-        # Restoring these files from a GitHub Actions cache might cause problems for future builds.
-        run: |
-          rm -f ~/.gradle/caches/modules-2/modules-2.lock
-          rm -f ~/.gradle/caches/modules-2/gc.properties
+      - name: Build using Gradle plugin # https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html
+        run: ./gradlew clean nativeCompile
       - name: Upload build to Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: build/libs/http4k-api.jar
+          files: build/native/nativeCompile/http4k-api

@@ -3,7 +3,6 @@ package org.aaron.routes
 import com.squareup.moshi.Json
 import org.aaron.context.requestSharedStateKey
 import org.aaron.json.jsonFormat
-import org.http4k.core.Method
 import org.http4k.core.Method.GET
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
@@ -30,7 +29,7 @@ data class RequestFieldsDTO(
     val requestID: Long,
 
     @Json(name = "method")
-    val method: Method,
+    val method: String,
 
     @Json(name = "version")
     val version: String,
@@ -59,7 +58,7 @@ object RequestInfoRoute {
         val requestInfoDTO = RequestInfoDTO(
             requestFields = RequestFieldsDTO(
                 requestID = requestSharedStateKey(request).requestID,
-                method = request.method,
+                method = request.method.toString(),
                 version = request.version,
                 uri = request.uri.toString(),
                 source = request.source?.let {

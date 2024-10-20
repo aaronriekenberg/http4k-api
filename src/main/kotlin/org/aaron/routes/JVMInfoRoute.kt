@@ -136,13 +136,13 @@ data class ThreadDTO(
     val name: String,
 
     @Json(name = "state")
-    val state: Thread.State,
+    val state: String,
 )
 
 private fun ThreadInfo.toThreadDTO() = ThreadDTO(
     id = threadId,
     name = threadName,
-    state = threadState,
+    state = threadState.name,
 )
 
 @JsonSerializable

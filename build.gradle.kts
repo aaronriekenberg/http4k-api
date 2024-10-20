@@ -81,12 +81,3 @@ dependencies {
     testImplementation(Testing.junit.jupiter.api)
     testImplementation(Testing.junit.jupiter.engine)
 }
-
-graalvmNative {
-    binaries {
-        named("main") {
-            verbose.set(true)
-            buildArgs.add("-H:IncludeResources=\".*/appversion.properties\"")
-        }
-    }
-}

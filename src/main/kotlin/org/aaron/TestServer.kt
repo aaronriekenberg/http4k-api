@@ -45,7 +45,7 @@ fun main() {
 
     events(
         ServerStartedEvent(
-            version = version,
+            version = version(env),
             port = server.port(),
             backendServer = "jettyLoomH2C",
         )

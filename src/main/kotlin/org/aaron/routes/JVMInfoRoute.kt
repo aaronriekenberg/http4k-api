@@ -139,10 +139,30 @@ private fun ThreadInfo.toThreadDTO() = ThreadDTO(
     state = threadState,
 )
 
+data class CurrentThreadInfoDTO(
+    @Json(name = "virtual")
+    val virtual: Boolean,
+
+    @Json(name = "id")
+    val id: Long,
+
+    @Json(name = "name")
+    val name: String,
+)
+
+fun buildCurrentThreadInfoDTO(): CurrentThreadInfoDTO {
+    val currentThread = Thread.currentThread()
+    return CurrentThreadInfoDTO(
+        virtual = currentThread.isVirtual,
+        id = currentThread.threadId(),
+        name = currentThread.name,
+    )
+}
+
 data class ThreadInfoDTO(
 
-    @Json(name = "current_thread_is_virtual")
-    val currentThreadIsVirtual: Boolean,
+    @Json(name = "current_thread")
+    val currentThreadInfo: CurrentThreadInfoDTO,
 
     @Json(name = "thread_count")
     val threadCount: Int,
@@ -153,17 +173,17 @@ data class ThreadInfoDTO(
     @Json(name = "total_started_thread_count")
     val totalStartedThreadCount: Long,
 
-    @Json(name = "threads")
-    val threads: List<ThreadDTO>,
+    @Json(name = "all_threads")
+    val allThreads: List<ThreadDTO>,
 )
 
 private fun ThreadMXBean.toThreadInfoDTO() =
     ThreadInfoDTO(
-        currentThreadIsVirtual = Thread.currentThread().isVirtual,
+        currentThreadInfo = buildCurrentThreadInfoDTO(),
         threadCount = threadCount,
         peakThreadCount = peakThreadCount,
         totalStartedThreadCount = totalStartedThreadCount,
-        threads = getThreadInfo(allThreadIds)
+        allThreads = getThreadInfo(allThreadIds)
             .filterNotNull()
             .map { it.toThreadDTO() }
             .sortedBy { it.id }

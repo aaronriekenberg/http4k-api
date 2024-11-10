@@ -8,12 +8,12 @@ import org.aaron.event.ServerStartedEvent
 import org.aaron.event.catchAllFilter
 import org.aaron.event.events
 import org.aaron.event.recordHttpTransactionFilter
+import org.aaron.helidon.CustomHelidon
 import org.aaron.routes.*
 import org.http4k.core.Method.GET
 import org.http4k.core.then
 import org.http4k.routing.bind
 import org.http4k.routing.routes
-import org.http4k.server.Helidon
 import org.http4k.server.asServer
 
 fun main() {
@@ -38,7 +38,7 @@ fun main() {
             .then(appRoutes)
 
     val server = appWithFilters.asServer(
-        Helidon(
+        CustomHelidon(
             port = port(env).value,
         )
     ).start()
@@ -47,7 +47,7 @@ fun main() {
         ServerStartedEvent(
             version = version,
             port = server.port(),
-            backendServer = "Helidon",
+            backendServer = "CustomHelidon",
         )
     )
 }

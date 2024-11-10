@@ -17,7 +17,6 @@ class CustomHelidon(val port: Int = 8000) : ServerConfig {
             .port(port)
             .connectionOptions { socketOptions ->
                 socketOptions.tcpNoDelay(true)
-                println("set tcpNoDelay(true)")
             }
             .build()
 

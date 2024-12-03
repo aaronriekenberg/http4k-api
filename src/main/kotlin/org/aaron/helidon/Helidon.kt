@@ -13,7 +13,7 @@ class CustomHelidon(val port: Int = 8000) : ServerConfig {
 
     override fun toServer(http: HttpHandler): Http4kServer = object : Http4kServer {
         private val server = WebServer.builder()
-            .addRouting(HttpRouting.builder().any(HelidonHandler(http)))
+            .addRouting(HttpRouting.builder().any(HelidonHandler(http = http, sse = null)))
             .port(port)
             .connectionOptions { socketOptions ->
                 socketOptions.tcpNoDelay(true)
